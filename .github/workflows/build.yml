@@ -32,6 +32,6 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: dist
-          path: ./dist/angular-test
+          path: ./dist/angular-test/browser
 
         

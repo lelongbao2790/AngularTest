@@ -1,5 +1,5 @@
 # This is a basic workflow to test the source code 
-name: Build Angular 
+name: Build - Deploy 
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -44,3 +44,4 @@ jobs:
          args: deploy --only hosting
         env:
          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    

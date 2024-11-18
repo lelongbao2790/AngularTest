@@ -1,0 +1,43 @@
+# This is a basic workflow to test the source code 
+name: Build Angular 
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+# build job
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Setup node js
+        uses: actions/setup-node@master
+        with:
+          node-version: '22.x'
+      - name: Install dependencies need to build the app
+        run: |
+          npm install
+          npm install @angular-devkit/build-angular 
+          
+      - name: Build source code
+        run: npm run build 
+        
+      - name: Archive to the dist
+        uses: actions/upload-artifact@master
+        with:
+          name: dist
+          path: ./dist/angular-test/browser
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+         args: deploy --only hosting
+        env:
+         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

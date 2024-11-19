@@ -34,22 +34,16 @@ jobs:
         ref: ${{ github.event.pull_request.merge_commit_sha }}
         fetch-depth: '0'
 
-    - name: Get tag
-      id: tag
-      uses: devops-actions/action-get-tag@v1.0.3
-      with:
-        strip_v: true # Optional: Remove 'v' character from version
-        
-    - name: Use tag
-      run: echo ${{steps.tag.outputs.tag}}
+    - name: "Set latest tag"
+      id: set-latest-tag
+      run: echo "latest_tag=$(git tag | sort --version-sort | tail -n1)" >> $GITHUB_ENV
       
     - name: Create Release
       uses: actions/create-release@v1
       env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }} 
       with:
-          tag_name: ${{steps.tag.outputs.tag}}
-          release_name: Release ${{steps.tag.outputs.tag}}
-          body: |
+          tag_name: env.latest_tag
+          release_name: Release env.latest_tag
           draft: false
           prerelease: false

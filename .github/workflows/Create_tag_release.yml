@@ -2,7 +2,7 @@ name: tag-release-version
 on:
   push:
     branches:
-      - master
+      - release
 jobs:
   create-tag-version:
     name: Create Tag Version
@@ -10,19 +10,43 @@ jobs:
     permissions:
       contents: write
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repo
+      uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.merge_commit_sha }}
         fetch-depth: '0'
 
-    - name: Bump version and push tag
-      uses: anothrNick/github-tag-action@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        WITH_V: true
-        PRERELEASE: true
-        # default bump is minor, format: major.minor.patch
-        DEFAULT_BUMP: patch 
+    - name: Get tag from project
+      uses: bbonkr/get-version-action@v1
+      id: get_version
+      with:
+        project: './package.json'
+        show_log_message: true
+
+    - name: logging
+      run: |
+        echo "version=${{ steps.get_version.outputs.version }}"
+        echo "major=${{ steps.get_version.outputs.major }}"
+        echo "minor=${{ steps.get_version.outputs.minor }}"
+        echo "patch=${{ steps.get_version.outputs.patch }}"
+        echo "pre-release=${{ steps.get_version.outputs.pre-release }}"
+        echo "build=${{ steps.get_version.outputs.build }}"
+
+    - name: Create git tag
+      run: |
+          git tag v${{ steps.get_version.outputs.version }}
+          
+    - name: Push git tag
+      run: git push origin v${{ steps.get_version.outputs.version }}
+
+    # - name: Bump version and push tag
+    #   uses: anothrNick/github-tag-action@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+    #     WITH_V: true
+    #     PRERELEASE: true
+    #     # default bump is minor, format: major.minor.patch
+    #     DEFAULT_BUMP: patch 
 
   create-release:
     needs: create-tag-version

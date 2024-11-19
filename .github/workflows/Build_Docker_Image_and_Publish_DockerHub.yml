@@ -38,7 +38,7 @@ jobs:
       - name: Docker meta
         uses: docker/metadata-action@v4
         with:
-          images: name/app
+          images: lelongbao/angulartest
           tags: |
             type=raw,value={{date 'Y-M-D-H-m-S'}}
 
@@ -47,5 +47,6 @@ jobs:
         with:
           context: .
           dockerfile: Dockerfile
-          push: false
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

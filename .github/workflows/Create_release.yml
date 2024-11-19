@@ -1,4 +1,4 @@
-name: Create Release
+name: Create Tag
 
 on:
   push:
@@ -26,11 +26,11 @@ jobs:
         
       - name: Display SemVer
         run: |
-          echo "SemVer: $GITVERSION_SEMVER" && echo "$version" && echo "$major.$minor.$patch"
+          echo "SemVer: $GITVERSION_SEMVER" && echo "$version" && echo "v$major.$minor.$patch"
      
       - name: Create git tag
         run: |
-          git tag v$GITVERSION_SEMVER
+          git tag $GITVERSION_SEMVER
           
       - name: Push git tag
-        run: git push origin v$GITVERSION_SEMVER
+        run: git push origin $GITVERSION_SEMVER

@@ -9,6 +9,8 @@ branches:
     increment: Minor
     regex: feature?[/-]
   master:
+    source-branches: ['master']
+    mode: ContinuousDeployment
     is-mainline: true
     increment: Patch
     regex: main$

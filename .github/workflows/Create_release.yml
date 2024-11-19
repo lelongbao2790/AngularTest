@@ -30,7 +30,7 @@ jobs:
      
       - name: Create git tag
         run: |
-          git tag $GITVERSION_SEMVER
+          git tag v$GITVERSION_SEMVER
           
       - name: Push git tag
-        run: git push origin $GITVERSION_SEMVER
+        run: git push origin v$GITVERSION_SEMVER

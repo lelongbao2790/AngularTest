@@ -34,9 +34,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD_TOKEN }}
-
+          
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ vars.DOCKER_HUB_USERNAME }}/angulartest:latest
+          tags: ${{ vars.DOCKER_HUB_USERNAME }}/angulartest

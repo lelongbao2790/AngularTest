@@ -20,3 +20,4 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           prerelease: "true"
           draft: "false"
+          generateReleaseNotes: "true"

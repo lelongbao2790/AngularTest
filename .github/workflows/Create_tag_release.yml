@@ -1,4 +1,4 @@
-name: Create Tag
+name: Create Tag and Release
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  release:
+  build_tag:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -28,9 +28,33 @@ jobs:
         run: |
           echo "SemVer: $GITVERSION_SEMVER" && echo "$version" && echo "$major.$minor.$patch"
      
-      - name: Create git tag
+      - name: Create Git Tag
         run: |
           git tag v$GITVERSION_SEMVER
           
       - name: Push git tag
         run: git push origin v$GITVERSION_SEMVER
+        
+  build_release:
+    name: Create Release 
+    needs: build_tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Create Git Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          # body: |
+          #   Changes in this Release
+          #   - First Change
+          #   - Second Change
+          draft: false
+          prerelease: false
+    

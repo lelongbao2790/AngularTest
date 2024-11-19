@@ -35,11 +35,8 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD_TOKEN }}
 
-      - name: Build and Push image
-        uses: docker/build-push-action@v5
+      - name: Build and push
+        uses: docker/build-push-action@v6
         with:
-          context: .
           push: true
-          tags: >
-            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.run_number }},
-            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:latest
+          tags: ${{ vars.DOCKER_HUB_USERNAME }}/clockbox:latest

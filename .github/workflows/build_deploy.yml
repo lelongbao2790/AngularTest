@@ -5,9 +5,9 @@ name: Build - Deploy
 # events but only for the master branch
 on:
   push:
-    branches: [master]
+    branches: [release]
   pull_request:
-    branches: [master]
+    branches: [release]
 
 jobs:
 # build job
@@ -17,6 +17,7 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        
       - name: Setup node js
         uses: actions/setup-node@master
         with:

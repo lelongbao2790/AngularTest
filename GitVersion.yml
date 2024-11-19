@@ -4,7 +4,7 @@ commit-message-incrementing: MergeMessageOnly
 branches:
   hotfix:
     regex: hotfix?[/-]
-    source-branches: ['main']
+    source-branches: ['master']
   feature:
     increment: Minor
     regex: feature?[/-]

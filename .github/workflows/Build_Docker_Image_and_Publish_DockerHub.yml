@@ -9,12 +9,12 @@ on:
   pull_request:
     branches: [pineline]
 env:
- 
-  IMAGE_NAME: angular_test
+  DOCKER_HUB_NAMESPACE: lelongbao
+  IMAGE_NAME: angulartest
   
 jobs:
 # build job
-  build_docker_image:
+  build_and_push_docker:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     permissions:
@@ -34,18 +34,21 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD_TOKEN }}
-          
+
+      - name: "Set current date as env variable"
+        run: |
+          echo "builddate=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        id: version  # this is used on variable path
+        
       - name: Docker meta
         uses: docker/metadata-action@v4
         with:
           images: lelongbao/angulartest
-          tags: |
-            type=raw,value={{date 'Y-M-D-H-m-S'}}
 
-      - name: Build Docker image
+      - name: Build Docker image and Push to Docker Hub
         uses: docker/build-push-action@v2
         with:
           context: .
           dockerfile: Dockerfile
           push: true
-          tags: lelongbao/angulartest:latest
+          tags: ${{ env.DOCKER_HUB_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.builddate }}

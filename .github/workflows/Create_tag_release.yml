@@ -1,15 +1,12 @@
-name: Create Tag and Release
-
+name: tag-release-version
 on:
   push:
     branches:
-      - master
-
+      - main
 jobs:
-  build_tag:
+  create-tag-version:
+    name: Create Tag Version
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     outputs:
       branchName: ${{ steps.gitversion.outputs.branchName }}
     steps:
@@ -45,4 +42,3 @@ jobs:
         repo_token: "${{ secrets.GH_TOKEN }}"
         prerelease: false
         automatic_release_tag: v${{ steps.gitversion.outputs.semVer }}
-    

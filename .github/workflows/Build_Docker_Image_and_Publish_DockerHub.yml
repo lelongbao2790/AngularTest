@@ -5,9 +5,9 @@ name: Build Docker Image and publish to Docker Hub
 # events but only for the master branch
 on:
   push:
-    branches: [pineline]
+    branches: [release]
   pull_request:
-    branches: [pineline]
+    branches: [release]
 env:
   DOCKER_HUB_NAMESPACE: lelongbao
   IMAGE_NAME: angulartest

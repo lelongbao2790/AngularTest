@@ -24,7 +24,9 @@ jobs:
           
       - name: Determine Version
         uses: gittools/actions/gitversion/execute@v3.0.2
-        
+        with:
+          useConfigFile: true
+          
       - name: Display SemVer
         run: |
           echo "SemVer: $GITVERSION_SEMVER" && echo "$version" && echo "$major.$minor.$patch"

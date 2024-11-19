@@ -21,4 +21,26 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         WITH_V: true
         PRERELEASE: true
-      
+
+  create-release:
+    needs: create-tag-version
+    name: Create Release Version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.merge_commit_sha }}
+        fetch-depth: '0'
+        
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }} 
+      with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+          draft: false
+          prerelease: false

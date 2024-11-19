@@ -21,6 +21,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         WITH_V: true
         PRERELEASE: true
+        # default bump is minor, format: major.minor.patch
+        DEFAULT_BUMP: patch 
 
   create-release:
     needs: create-tag-version
